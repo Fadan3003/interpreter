@@ -27,7 +27,31 @@
         function closePopup() {
             document.getElementById("overlay").style.display = "none"
             document.getElementById("popup").style.display = "none"
+        }
 
+        let promptCallback = null;
+
+        function prompt(text) {
+            document.getElementById("promptText").textContent = text
+            document.getElementById("promptInput").value = ""
+            document.getElementById("popupPrompt").style.display = "block"
+            document.getElementById("overlayPrompt").style.display = "block"
+        }
+
+        function submitPrompt() {
+            const value = document.getElementById("promptInput").value;
+            document.getElementById("overlayPrompt").style.display = "none"
+            document.getElementById("popupPrompt").style.display = "none"
+            last_prompt = value
+        }
+
+        function closePrompt() {
+            document.getElementById("overlayPrompt").style.display = "none"
+            document.getElementById("popupPrompt").style.display = "none"
+            if (promptCallback) {
+                promptCallback(null);
+                promptCallback = null;
+            }
         }
 
         const color = (color) => {
@@ -67,4 +91,28 @@
             document.documentElement.requestFullscreen();
             document.body.style.backgroundColor = outpoot.style.backgroundColor;
             document.body.innerHTML = out_from;
+            // Popup-Elemente wiederherstellen, damit warn() im Fullscreen funktioniert
+            const overlay = document.createElement("div");
+            overlay.className = "overlay";
+            overlay.id = "overlay";
+            overlay.style.display = "none";
+            const popup = document.createElement("div");
+            popup.className = "popup";
+            popup.id = "popup";
+            popup.style.display = "none";
+            popup.innerHTML = '<h2 id="popupText"></h2><button onclick="closePopup()">ok</button>';
+            document.body.appendChild(overlay);
+            document.body.appendChild(popup);
+            // Prompt-Popup wiederherstellen
+            const overlayPrompt = document.createElement("div");
+            overlayPrompt.className = "overlay";
+            overlayPrompt.id = "overlayPrompt";
+            overlayPrompt.style.display = "none";
+            const popupPrompt = document.createElement("div");
+            popupPrompt.className = "popup";
+            popupPrompt.id = "popupPrompt";
+            popupPrompt.style.display = "none";
+            popupPrompt.innerHTML = '<h2 id="promptText"></h2><input type="text" id="promptInput" style="width: 80%; padding: 5px; margin-bottom: 10px;"><br><button onclick="submitPrompt()">ok</button><button onclick="closePrompt()">cancel</button>';
+            document.body.appendChild(overlayPrompt);
+            document.body.appendChild(popupPrompt);
         };
