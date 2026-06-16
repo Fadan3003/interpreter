@@ -84,6 +84,15 @@
             document.getElementById("outpoot").innerHTML += `<input type="text" placeholder="${prompt}">`
         }
 
+        const case_of = (if_var, eval_var) => {
+            if(if_var = true){
+                 eval(eval_var)
+            }
+        }
+
+    
+        
+
         const oweride = () => {
             localStorage.setItem("HTML", document.body.innerHTML);
             localStorage.setItem("inf", document.getElementById("inf").value)
